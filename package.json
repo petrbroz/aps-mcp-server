@@ -1,0 +1,35 @@
+{
+  "name": "aps-mcp-server",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "description": "Experimental [Model Context Protocol](https://modelcontextprotocol.io) server providing access to [Autodesk Platform Services](https://aps.autodesk.com) API.",
+  "author": "Petr Broz <petr.broz@autodesk.com>",
+  "bin": {
+    "aps-mcp-server": "./build/index.js",
+    "create-service-account": "./tools/create-service-account.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "inspect": "mcp-inspector node ./build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "dependencies": {
+    "@aps_sdk/authentication": "^1.0.0",
+    "@aps_sdk/construction-issues": "^1.1.0",
+    "@aps_sdk/data-management": "^1.0.1",
+    "@modelcontextprotocol/sdk": "^1.7.0",
+    "dotenv": "^16.4.7",
+    "jsonwebtoken": "^9.0.2",
+    "node-fetch": "^3.3.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/inspector": "^0.6.0",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.2"
+  }
+}
