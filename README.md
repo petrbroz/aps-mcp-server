@@ -41,19 +41,21 @@ Experimental [Model Context Protocol](https://modelcontextprotocol.io) server bu
 - Create a Claude Desktop config file if you don't have one yet:
     - On macOS: _~/Library/Application Support/Claude/claude\_desktop\_config.json_
     - On Windows: _%APPDATA%\Claude\claude\_desktop\_config.json_
-- Add this MCP server to the config, using the absolute path of the _build/index.js_ file:
+- Add this MCP server to the config, using the absolute path of the _build/server.js_ file on your system, for example:
 ```json
 {
     "mcpServers": {
         "autodesk-platform-services": {
             "command": "node",
             "args": [
-                "/absolute/path/to/aps-mcp-server/build/index.js"
+                "/absolute/path/to/aps-mcp-server/build/server.js"
             ]
         }
     }
 }
 ```
-- Open Claude Desktop, and try the following test prompt: `What Autodesk Construction Cloud accounts and projects do I have access to?`
+- Open Claude Desktop, and try some of the following test prompt:
+    - What ACC projects do I have access to?
+    - Give me a visual dashboard of all issues in project XYZ
 
 > For more details on how to add MCP servers to Claude Desktop, see the [official documentation](https://modelcontextprotocol.io/quickstart/user).

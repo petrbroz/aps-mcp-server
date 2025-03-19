@@ -6,12 +6,12 @@
   "description": "Experimental [Model Context Protocol](https://modelcontextprotocol.io) server providing access to [Autodesk Platform Services](https://aps.autodesk.com) API.",
   "author": "Petr Broz <petr.broz@autodesk.com>",
   "bin": {
-    "aps-mcp-server": "./build/index.js",
-    "create-service-account": "./tools/create-service-account.js"
+    "aps-mcp-server": "./build/server.js",
+    "create-service-account": "./scripts/create-service-account.js"
   },
   "scripts": {
     "build": "tsc",
-    "inspect": "mcp-inspector node ./build/index.js"
+    "inspect": "mcp-inspector node ./build/server.js"
   },
   "files": [
     "build"
