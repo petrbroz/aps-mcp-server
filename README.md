@@ -2,6 +2,8 @@
 
 Experimental [Model Context Protocol](https://modelcontextprotocol.io) server build with Node.js, providing access to [Autodesk Platform Services](https://aps.autodesk.com) API, with fine-grained access control using the new _Secure Service Accounts_ feature.
 
+![Screenshot](screenshot.png)
+
 ## Development
 
 ### Prerequisites
