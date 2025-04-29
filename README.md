@@ -20,7 +20,7 @@ Experimental [Model Context Protocol](https://modelcontextprotocol.io) server bu
 - Create a _.env_ file in the root folder of this project, and add your APS credentials:
     - `APS_CLIENT_ID` - your APS application client ID
     - `APS_CLIENT_SECRET` - your APS application client secret
-- Create a new service account (let's call it `test-account-1`): `npx create-service-account test-account-1`
+- Create a new service account: `npx create-service-account ssa-test-user John Doe`
     - This script will output an email of the newly created service account, and a bunch of environment variables
 - Add or overwrite the new environment variables in your _.env_ file
     - `APS_SA_ID` -  your service account ID

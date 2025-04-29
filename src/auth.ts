@@ -98,17 +98,19 @@ export async function getServiceAccountAccessToken(clientId: string, clientSecre
  * Creates a new service account with the given name.
  *
  * @param name The name of the service account to create (must be between 5 and 64 characters long).
+ * @param firstName The first name of the service account.
+ * @param lastName The last name of the service account.
  * @param accessToken The access token for authentication.
  * @returns A promise that resolves to the created service account response.
  * @throws If the request to create the service account fails.
  */
-export async function createServiceAccount(name: string, accessToken: string) {
+export async function createServiceAccount(name: string, firstName: string, lastName: string, accessToken: string) {
     const headers = {
         "Accept": "application/json",
         "Authorization": `Bearer ${accessToken}`,
         "Content-Type": "application/json"
     };
-    const body = JSON.stringify({ name });
+    const body = JSON.stringify({ name, firstName, lastName });
     const response = await fetch("https://developer.api.autodesk.com/authentication/v2/service-accounts", { method: "POST", headers, body });
     if (!response.ok) {
         throw new Error(`Could not create service account: ${await response.text()}`);
