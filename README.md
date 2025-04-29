@@ -4,6 +4,8 @@ Experimental [Model Context Protocol](https://modelcontextprotocol.io) server bu
 
 ![Screenshot](screenshot.png)
 
+[YouTube Video](https://youtu.be/6DRSR9HlIds)
+
 ## Development
 
 ### Prerequisites
