@@ -13,6 +13,7 @@ export { getProjectFiles } from "./get-project-files.js";
 export { getProjectSummary } from "./get-project-summary.js";
 export { getProjectDiagnostics } from "./get-project-diagnostics.js";
 export { getProjectFilesDiagnostic } from "./get-project-files-diagnostic.js";
+export { getFolderContentsEnhanced } from "./get-folder-contents-enhanced.js";
 
 // Note: Forms and RFI tools removed due to 3-legged OAuth requirement
 // These will be added back when we implement proper user authentication
