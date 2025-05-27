@@ -1,0 +1,140 @@
+# ACC-MCP Server Issues & Status
+
+## 🔴 Critical Issues (Blocks Core Functionality)
+
+### None Currently
+
+---
+
+## 🟡 High Priority Issues (Impacts User Experience)
+
+### Issue #1: "No Data" Returns from Working Tools
+- **Status**: 🔍 Under Investigation
+- **Symptoms**: Tools execute without error but return empty results
+- **Affected Tools**: get-issues, get-folder-contents, get-issue-types
+- **Priority**: High
+- **Hypothesis**: 
+  - Service account permissions insufficient
+  - Test project has no data
+  - API scope limitations
+- **Next Action**: Run comprehensive diagnostics
+- **Assigned**: Current session
+
+### Issue #2: Parameter Mismatch Errors 
+- **Status**: ✅ FIXED (needs testing)
+- **Symptoms**: "Invalid project id" errors
+- **Root Cause**: Missing accountId parameters in new tools
+- **Solution**: Auto-resolve accountId from user's account list
+- **Tools Fixed**: get-project-files, get-project-summary
+- **Next Action**: Systematic testing to verify fix
+
+---
+
+## 🟢 Medium Priority Issues (Feature Improvements)
+
+### Issue #3: Forms/RFI API Integration
+- **Status**: 🔴 Blocked - Technical Limitation
+- **Root Cause**: Requires 3-legged OAuth (user login)
+- **Current Auth**: 2-legged OAuth (Service Accounts)
+- **Decision**: Postpone until core functionality stable
+- **Alternative**: Document limitation and provide workaround suggestions
+
+### Issue #4: Error Handling Inconsistency
+- **Status**: 🟡 Needs Improvement
+- **Issue**: Different tools handle errors differently
+- **Impact**: Inconsistent user experience
+- **Solution**: Standardize error response format across all tools
+- **Priority**: Medium
+
+---
+
+## 🔵 Low Priority Issues (Code Quality)
+
+### Issue #5: TypeScript Strictness
+- **Status**: 🟡 In Progress
+- **Issue**: Some tools use `any` types, loose error handling
+- **Solution**: Implement stricter TypeScript configuration
+- **Progress**: ESLint configuration added
+
+### Issue #6: Documentation Gaps
+- **Status**: 🔵 Planned
+- **Issue**: Missing comprehensive API documentation
+- **Solution**: Create detailed documentation for each tool
+- **Timeline**: After core functionality stable
+
+---
+
+## ✅ Resolved Issues
+
+### Issue #7: Environment Variable Loading (RESOLVED)
+- **Status**: ✅ RESOLVED
+- **Issue**: Claude Desktop couldn't load .env file
+- **Root Cause**: Wrong path resolution for .env file
+- **Solution**: 
+  1. Fixed path resolution in config.ts
+  2. Added direct env vars to Claude Desktop config
+- **Resolution Date**: Current session
+
+### Issue #8: TypeScript Compilation Errors (RESOLVED)
+- **Status**: ✅ RESOLVED  
+- **Issue**: Multiple TypeScript errors preventing build
+- **Root Cause**: Missing type definitions, improper type assertions
+- **Solution**: Added proper interfaces and type assertions
+- **Resolution Date**: Current session
+
+---
+
+## 📊 Current System Status
+
+### ✅ Working Components:
+- Authentication (Service Accounts)
+- Basic project/account access
+- Issue root causes retrieval
+- Build system (TypeScript compilation)
+- Claude Desktop integration
+
+### 🔍 Under Investigation:
+- Data retrieval from project APIs
+- Service account permissions scope
+- Project data availability
+
+### ❌ Known Limitations:
+- Forms API (requires 3-legged OAuth)
+- RFI API (requires 3-legged OAuth)
+- Drawing sheet processing (not yet attempted)
+
+---
+
+## 🎯 Next Actions (Prioritized)
+
+1. **[HIGH]** Run diagnostic tool to identify data availability issues
+2. **[HIGH]** Test fixed parameter resolution in project tools
+3. **[MEDIUM]** Standardize error handling across all tools
+4. **[MEDIUM]** Add comprehensive testing for working tools
+5. **[LOW]** Improve documentation and code quality
+
+---
+
+## 📋 Testing Checklist
+
+### Tools to Test Systematically:
+- [ ] get-accounts (✅ Known working)
+- [ ] get-projects (✅ Known working) 
+- [ ] get-issue-root-causes (✅ Known working)
+- [ ] get-project-files (🔍 Fixed, needs testing)
+- [ ] get-project-summary (🔍 Fixed, needs testing)
+- [ ] get-project-diagnostics (🆕 New tool, needs testing)
+- [ ] get-issues (❓ Returns no data, investigate)
+- [ ] get-folder-contents (❓ Returns no data, investigate)
+- [ ] get-issue-types (❓ Returns no data, investigate)
+
+### Testing Method:
+1. **MCP Inspector Testing** - Verify tool execution
+2. **Claude Desktop Testing** - Verify integration
+3. **Error Case Testing** - Verify error handling
+4. **Edge Case Testing** - Invalid parameters, etc.
+
+---
+
+*Last Updated: Current Session*
+*Next Review: After diagnostic testing*

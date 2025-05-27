@@ -5,7 +5,12 @@
   "private": true,
   "description": "Model Context Protocol server for comprehensive Autodesk Construction Cloud integration - Construction Management focused",
   "author": "Your Name <your.email@company.com>",
-  "keywords": ["autodesk", "construction-cloud", "mcp", "construction-management"],
+  "keywords": [
+    "autodesk",
+    "construction-cloud",
+    "mcp",
+    "construction-management"
+  ],
   "bin": {
     "acc-mcp-server": "./build/server.js",
     "create-service-account": "./scripts/create-service-account.js"
@@ -15,8 +20,12 @@
     "dev": "tsc --watch",
     "inspect": "mcp-inspector node ./build/server.js",
     "test": "node --test",
+    "test:watch": "node --test --watch",
     "lint": "eslint src/**/*.ts",
-    "format": "prettier --write src/**/*.ts"
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "validate": "npm run lint && npm run build && npm run test",
+    "clean": "rm -rf build/"
   },
   "files": [
     "build",
@@ -30,21 +39,21 @@
     "dotenv": "^16.4.7",
     "jsonwebtoken": "^9.0.2",
     "node-fetch": "^3.3.2",
-    "zod": "^3.24.2",
-    "winston": "^3.11.0",
     "pdf-parse": "^1.1.1",
-    "sharp": "^0.33.0"
+    "sharp": "^0.33.0",
+    "winston": "^3.11.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@modelcontextprotocol/inspector": "^0.6.0",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.10",
     "@types/pdf-parse": "^1.1.4",
-    "typescript": "^5.8.2",
-    "eslint": "^8.57.0",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "prettier": "^3.2.5"
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.8.2"
   },
   "repository": {
     "type": "git",
