@@ -9,24 +9,29 @@
 ## 🟡 High Priority Issues (Impacts User Experience)
 
 ### Issue #1: "No Data" Returns from Working Tools
-- **Status**: 🔍 Under Investigation
+- **Status**: 🔍 ROOT CAUSE IDENTIFIED
 - **Symptoms**: Tools execute without error but return empty results
 - **Affected Tools**: get-issues, get-folder-contents, get-issue-types
 - **Priority**: High
-- **Hypothesis**: 
-  - Service account permissions insufficient
-  - Test project has no data
-  - API scope limitations
-- **Next Action**: Run comprehensive diagnostics
+- **Root Cause**: **Folder/Files API specifically failing with "Invalid project id"**
+- **Key Finding**: Project ID is valid (works with Projects, Issues, Accounts APIs)
+- **Systematic Test Results**:
+  - ✅ Accounts API: Working
+  - ✅ Projects API: Working  
+  - ✅ Issues API: Working (0 issues found - project is empty)
+  - ❌ Folders API: **FAILING** - "Invalid project id" error
+- **Next Action**: Deep diagnostic of folder API call vs working APIs
 - **Assigned**: Current session
 
 ### Issue #2: Parameter Mismatch Errors 
-- **Status**: ✅ FIXED (needs testing)
+- **Status**: ❌ FIX UNSUCCESSFUL (underlying folder API issue)
 - **Symptoms**: "Invalid project id" errors
-- **Root Cause**: Missing accountId parameters in new tools
-- **Solution**: Auto-resolve accountId from user's account list
-- **Tools Fixed**: get-project-files, get-project-summary
-- **Next Action**: Systematic testing to verify fix
+- **Root Cause**: **NOT parameter mismatch - Folder API itself is failing**
+- **Discovery**: Auto-resolve accountId logic works, but folder API still fails
+- **Tools Affected**: get-project-files, get-project-summary
+- **Systematic Test Results**: Both tools still fail with same error
+- **Real Issue**: Same as Issue #1 - Folder API problem
+- **Next Action**: Merge with Issue #1 investigation
 
 ---
 
