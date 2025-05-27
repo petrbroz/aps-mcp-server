@@ -20,7 +20,7 @@ export const getProjectFiles: Tool<typeof schema> = {
             
             // Remove b. prefix if present
             const cleanProjectId = projectId.replace("b.", "");
-            
+            // This is a different method of cleaning ProjectId than the rest of the project.  Please ensure consistency across the codebase.
             // If no accountId provided, get it from the accounts list
             let resolvedAccountId = accountId;
             if (!resolvedAccountId) {

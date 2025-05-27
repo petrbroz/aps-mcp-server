@@ -16,6 +16,7 @@ export const getItemVersions: Tool<typeof schema> = {
         // TODO: add pagination support
         const accessToken = await getAccessToken(["data:read"]);
         const dataManagementClient = new DataManagementClient();
+        projectId = projectId.replace("b.", ""); // the projectId should not contain the "b." prefix
         const versions = await dataManagementClient.getItemVersions(projectId, itemId, { accessToken });
         if (!versions.data) {
             throw new Error("No versions found");

@@ -17,6 +17,7 @@ export const getFolderContents: Tool<typeof schema> = {
         // TODO: add pagination support
         const accessToken = await getAccessToken(["data:read"]);
         const dataManagementClient = new DataManagementClient();
+        projectId = projectId.replace("b.", ""); // the projectId should not contain the "b." prefix
         const contents = folderId
             ? await dataManagementClient.getFolderContents(projectId, folderId, { accessToken })
             : await dataManagementClient.getProjectTopFolders(accountId, projectId, { accessToken });
