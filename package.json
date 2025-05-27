@@ -1,20 +1,26 @@
 {
-  "name": "aps-mcp-server",
+  "name": "acc-mcp-server",
   "version": "0.0.1",
   "type": "module",
   "private": true,
-  "description": "Experimental [Model Context Protocol](https://modelcontextprotocol.io) server providing access to [Autodesk Platform Services](https://aps.autodesk.com) API.",
-  "author": "Petr Broz <petr.broz@autodesk.com>",
+  "description": "Model Context Protocol server for comprehensive Autodesk Construction Cloud integration - Construction Management focused",
+  "author": "Your Name <your.email@company.com>",
+  "keywords": ["autodesk", "construction-cloud", "mcp", "construction-management"],
   "bin": {
-    "aps-mcp-server": "./build/server.js",
+    "acc-mcp-server": "./build/server.js",
     "create-service-account": "./scripts/create-service-account.js"
   },
   "scripts": {
     "build": "tsc",
-    "inspect": "mcp-inspector node ./build/server.js"
+    "dev": "tsc --watch",
+    "inspect": "mcp-inspector node ./build/server.js",
+    "test": "node --test",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
   },
   "files": [
-    "build"
+    "build",
+    "README.md"
   ],
   "dependencies": {
     "@aps_sdk/authentication": "^1.0.0",
@@ -24,12 +30,25 @@
     "dotenv": "^16.4.7",
     "jsonwebtoken": "^9.0.2",
     "node-fetch": "^3.3.2",
-    "zod": "^3.24.2"
+    "zod": "^3.24.2",
+    "winston": "^3.11.0",
+    "pdf-parse": "^1.1.1",
+    "sharp": "^0.33.0"
   },
   "devDependencies": {
     "@modelcontextprotocol/inspector": "^0.6.0",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.10",
-    "typescript": "^5.8.2"
-  }
+    "@types/pdf-parse": "^1.1.4",
+    "typescript": "^5.8.2",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "prettier": "^3.2.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Arborist-ai/acc-mcp-server"
+  },
+  "license": "MIT"
 }
