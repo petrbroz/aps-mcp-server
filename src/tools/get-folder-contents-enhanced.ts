@@ -57,7 +57,7 @@ export const getFolderContentsEnhanced: Tool<typeof schema> = {
                                         folders: contents.data.map((item) => ({
                                             id: item.id,
                                             type: item.type,
-                                            name: item.attributes?.displayName || item.attributes?.name,
+                                            name: item.attributes?.displayName || (item.attributes as any)?.name || 'Unknown',
                                             createTime: item.attributes?.createTime,
                                             modifyTime: item.attributes?.lastModifiedTime,
                                             extension: item.attributes?.extension?.type
