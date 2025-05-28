@@ -40,6 +40,7 @@ export const OAUTH_CONFIG = {
     scopes: ['data:read', 'data:write', 'account:read']
 };
 
+
 export {
     APS_CLIENT_ID,
     APS_CLIENT_SECRET,
