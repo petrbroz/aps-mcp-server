@@ -25,8 +25,8 @@
 
 ### 1. **Project ID Format Standardization** 
 **Root Issue**: Different Autodesk APIs expected different project ID formats
-- **DataManagement API**: Needs `b.871ee5fd-e16f-47d9-8b73-9613637d1dac` (with prefix)
-- **Issues API**: Needs `871ee5fd-e16f-47d9-8b73-9613637d1dac` (without prefix)
+- **DataManagement API**: Needs `b.EXAMPLE` (with prefix)
+- **Issues API**: Needs `EXAMPLE` (without prefix)
 
 **Fixed in 7 tools**: `get-folder-contents`, `get-project-files`, `get-item-versions`, `get-project-summary`, `get-project-diagnostics`
 
