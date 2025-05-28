@@ -1,6 +1,19 @@
-# aps-mcp-server
+# ACC MCP Server
 
-Experimental [Model Context Protocol](https://modelcontextprotocol.io) server build with Node.js, providing access to [Autodesk Platform Services](https://aps.autodesk.com) API, with fine-grained access control using the new _Secure Service Accounts_ feature.
+**Status: ✅ WORKING** - Major functionality restored and tested
+
+Model Context Protocol server for comprehensive [Autodesk Construction Cloud](https://construction.autodesk.com/) integration, built with Node.js and designed specifically for construction management workflows.
+
+## 🚀 **Current Status** 
+
+- ✅ **11 Working Tools** - Core functionality fully operational
+- ✅ **Service Account Authentication** - Reliable and secure
+- ✅ **Issues Management** - Complete issue tracking and categorization  
+- ✅ **File & Folder Access** - Browse project documents and versions
+- ✅ **Project Diagnostics** - Comprehensive project analysis tools
+- ⚠️ **2 Tools Disabled** - Forms/RFI tools require 3-legged OAuth
+
+> **See [TOOL_STATUS.md](TOOL_STATUS.md) for detailed testing results and technical documentation**
 
 ![Screenshot](screenshot.png)
 

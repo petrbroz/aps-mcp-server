@@ -9,7 +9,7 @@ const schema = {
 
 export const getIssues: Tool<typeof schema> = {
     title: "get-issues",
-    description: "List all available projects in an Autodesk Construction Cloud account",
+    description: "List all available issues in an Autodesk Construction Cloud account",
     schema,
     callback: async ({ projectId }) => {
         // TODO: add pagination support

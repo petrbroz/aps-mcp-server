@@ -4,3 +4,45 @@ build
 *.log
 .DS_Store
 Thumbs.db
+package.json
+SESSION_SUMMARY.md
+NOTES.md
+ISSUES.md
+
+# TypeScript
+dist
+*.tsbuildinfo
+
+# npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# VSCode
+.vscode/
+
+# MacOS
+.AppleDouble
+.LSOverride
+
+# Windows
+ehthumbs.db
+Desktop.ini
+
+# IDEs
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Misc
+*.swp
+*.swo
+*.bak
+*.tmp
