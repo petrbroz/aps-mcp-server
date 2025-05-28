@@ -15,12 +15,11 @@ export const getProjectFiles: Tool<typeof schema> = {
     schema,
     callback: async ({ projectId, accountId, folderId }) => {
         try {
-            const accessToken = await getAccessToken(["data:read"]);
+            const accessToken = await getAccessToken(["data:read", "data:write", "data:create", "data:search"]);
             const dataClient = new DataManagementClient();
             
-            // Remove b. prefix if present
-            const cleanProjectId = projectId.replace("b.", "");
-            // This is a different method of cleaning ProjectId than the rest of the project.  Please ensure consistency across the codebase.
+            // Use the project ID as provided - the SDK handles the proper format
+            const cleanProjectId = projectId;
             // If no accountId provided, get it from the accounts list
             let resolvedAccountId = accountId;
             if (!resolvedAccountId) {
@@ -55,7 +54,7 @@ export const getProjectFiles: Tool<typeof schema> = {
                     }]
                 };
             } else {
-                // Get project top folders
+                // Get project top folders - use full account and project IDs
                 const topFolders = await dataClient.getProjectTopFolders(resolvedAccountId, cleanProjectId, { accessToken });
                 
                 return {

@@ -15,29 +15,28 @@ export const getProjectSummary: Tool<typeof schema> = {
     schema,
     callback: async ({ projectId, accountId }) => {
         try {
-            const accessToken = await getAccessToken(["data:read"]);
+            // Use enhanced scopes for DataManagement API, data:read for Issues API
+            const dataAccessToken = await getAccessToken(["data:read", "data:write", "data:create", "data:search"]);
+            const issuesAccessToken = await getAccessToken(["data:read"]);
             const dataClient = new DataManagementClient();
             const issuesClient = new IssuesClient();
             
-            // Remove b. prefix if present
-            const cleanProjectId = projectId.replace("b.", "");
+            // Store original for DataManagement API, create cleaned version for Issues API
+            const originalProjectId = projectId;
+            projectId = projectId.replace("b.", ""); // Clean for Issues API
             
             // If no accountId provided, get it from the accounts list
             let resolvedAccountId = accountId;
             if (!resolvedAccountId) {
-                const hubs = await dataClient.getHubs({ accessToken });
+                const hubs = await dataClient.getHubs({ accessToken: dataAccessToken });
                 if (!hubs.data || hubs.data.length === 0) {
                     throw new Error("No accounts found");
                 }
-                // Use the first available account
                 resolvedAccountId = hubs.data[0].id!;
             }
             
-            // Get top-level folders structure
-            const topFolders = await dataClient.getProjectTopFolders(resolvedAccountId, cleanProjectId, { accessToken });
-            
-            // Get issues summary
-            const issues = await issuesClient.getIssues(cleanProjectId, { accessToken });
+            // Get issues summary (using cleaned project ID)
+            const issues = await issuesClient.getIssues(projectId, { accessToken: issuesAccessToken });
             
             // Analyze issues by status
             const issuesByStatus = (issues.results || []).reduce((acc: any, issue: any) => {
@@ -47,13 +46,16 @@ export const getProjectSummary: Tool<typeof schema> = {
                 return acc;
             }, {});
             
+            // Get top-level folders structure (using original project ID with b. prefix)
+            const topFolders = await dataClient.getProjectTopFolders(resolvedAccountId, originalProjectId, { accessToken: dataAccessToken });
+            
             // Count files in top folders (sample first 3 to avoid long response times)
             let totalFileCount = 0;
             const folderSummaries = [];
             
             for (const folder of (topFolders.data || []).slice(0, 3)) {
                 try {
-                    const folderContents = await dataClient.getFolderContents(cleanProjectId, folder.id!, { accessToken });
+                    const folderContents = await dataClient.getFolderContents(originalProjectId, folder.id!, { accessToken: dataAccessToken });
                     const fileCount = folderContents.data?.length || 0;
                     totalFileCount += fileCount;
                     
@@ -78,7 +80,7 @@ export const getProjectSummary: Tool<typeof schema> = {
                     text: JSON.stringify({
                         project: {
                             accountId: resolvedAccountId,
-                            projectId: cleanProjectId
+                            projectId: originalProjectId
                         },
                         summary: {
                             totalTopLevelFolders: topFolders.data?.length || 0,
@@ -91,9 +93,9 @@ export const getProjectSummary: Tool<typeof schema> = {
                             id: issue.id,
                             title: issue.title,
                             status: issue.status,
-                            assignedTo: issue.assigned_to,
-                            createdAt: issue.created_at,
-                            dueDate: issue.due_date
+                            assignedTo: issue.assignedTo,
+                            createdAt: issue.createdAt,
+                            dueDate: issue.dueDate
                         }))
                     }, null, 2)
                 }]
