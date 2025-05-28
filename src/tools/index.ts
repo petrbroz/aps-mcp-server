@@ -16,5 +16,8 @@ export { getProjectFilesDiagnostic } from "./get-project-files-diagnostic.js";
 export { getFolderContentsEnhanced } from "./get-folder-contents-enhanced.js";
 export { getFolderApiDiagnostic } from "./get-folder-api-diagnostic.js";
 
-// Note: Forms and RFI tools removed due to 3-legged OAuth requirement
-// These will be added back when we implement proper user authentication
+// Export Forms tool - now working with Service Account authentication
+export { getForms } from "./get-forms.js";
+
+// Note: RFI tools still disabled due to potential authentication requirements
+// Forms tool re-enabled using service account authentication approach
