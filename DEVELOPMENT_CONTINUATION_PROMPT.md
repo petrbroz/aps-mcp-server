@@ -80,7 +80,7 @@ const accessToken = oauthTokens.access_token;
 ### 🧪 Test Environment
 - Account: KBA, Inc. (ID: b.3a7fe64a-2d43-45f3-ad01-3fd41b92d1ec)
 - Test Project: "Finlayson Test" (ID: b.871ee5fd-e16f-47d9-8b73-9613637d1dac)
-- Forms tool tested and working (returns proper 404 for empty project)
+- Forms tool tested and semi-working (returns proper 404 for empty project) Form has been added but is not appearing.
 
 ## What I Need Help With
 

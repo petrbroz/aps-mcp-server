@@ -27,7 +27,7 @@ interface FormSubmission {
 }
 
 interface APIResponse<T> {
-    results?: T[];
+    data?: T[];  // <- Fixed: API uses "data" not "results"
     pagination?: {
         totalResults?: number;
     };
@@ -78,7 +78,7 @@ async function getSpecificForm(
     includeSubmissions: boolean
 ): Promise<any> {
     const formResponse = await fetch(
-        `https://developer.api.autodesk.com/construction/forms/v2/projects/${projectId}/forms/${formId}`,
+        `https://developer.api.autodesk.com/construction/forms/v1/projects/${projectId}/forms/${formId}`,
         {
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
@@ -127,7 +127,7 @@ async function getAllForms(
     includeSubmissions: boolean
 ): Promise<any> {
     const formsResponse = await fetch(
-        `https://developer.api.autodesk.com/construction/forms/v2/projects/${projectId}/forms`,
+        `https://developer.api.autodesk.com/construction/forms/v1/projects/${projectId}/forms`,
         {
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
@@ -141,7 +141,7 @@ async function getAllForms(
     }
 
     const formsData = await formsResponse.json() as APIResponse<Form>;
-    const forms = formsData.results || [];
+    const forms = formsData.data || [];  // <- Fixed: use "data" not "results"
 
     return {
         content: [{
@@ -173,7 +173,7 @@ async function getFormSubmissions(
     formId: string
 ): Promise<FormSubmission[]> {
     const submissionsResponse = await fetch(
-        `https://developer.api.autodesk.com/construction/forms/v2/projects/${projectId}/forms/${formId}/submissions`,
+        `https://developer.api.autodesk.com/construction/forms/v1/projects/${projectId}/forms/${formId}/submissions`,
         {
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
@@ -184,7 +184,7 @@ async function getFormSubmissions(
 
     if (submissionsResponse.ok) {
         const submissionsData = await submissionsResponse.json() as APIResponse<FormSubmission>;
-        return submissionsData.results || [];
+        return submissionsData.data || [];  // <- Fixed: use "data" not "results"
     }
     return [];
 }

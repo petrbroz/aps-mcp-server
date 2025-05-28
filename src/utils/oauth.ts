@@ -4,8 +4,14 @@ import fetch from 'node-fetch';
 import { OAUTH_CONFIG } from '../config.js';
 
 /**
- * OAuth Authentication Module for Autodesk Construction Cloud
- * Handles 3-legged OAuth flow for forms access
+ * Enhanced OAuth Authentication Module with Token Persistence
+ * Handles 3-legged OAuth flow with intelligent token management
+ * 
+ * BEHAVIOR:
+ * - First call: Opens browser for authentication
+ * - Subsequent calls: Uses cached tokens (no browser)
+ * - Token expires: Auto-refreshes using refresh token (no browser)
+ * - Refresh fails: Falls back to full authentication (browser opens)
  */
 
 interface OAuthTokens {
@@ -16,15 +22,82 @@ interface OAuthTokens {
     expires_at: number;
 }
 
+// In-memory token cache for session persistence
+let tokenCache: OAuthTokens | null = null;
+
 /**
- * Main function to authenticate with OAuth and get tokens
+ * Main function to authenticate with OAuth - now with intelligent caching
  */
 export async function authenticateWithOAuth(): Promise<OAuthTokens> {
-    // Clean OAuth flow without console.log statements that interfere with MCP protocol
+    // Check if we have valid cached tokens first
+    if (tokenCache && isTokenValid(tokenCache)) {
+        return tokenCache;
+    }
+
+    // Try to refresh expired tokens
+    if (tokenCache && tokenCache.refresh_token) {
+        try {
+            const refreshedTokens = await refreshAccessToken(tokenCache.refresh_token);
+            tokenCache = refreshedTokens;
+            return refreshedTokens;
+        } catch (error) {
+            // Refresh failed, clear cache and fall back to full auth
+            tokenCache = null;
+        }
+    }
+
+    // Perform full OAuth flow only as last resort
+    const newTokens = await performFullOAuthFlow();
+    tokenCache = newTokens;
+    return newTokens;
+}
+
+/**
+ * Check if cached token is still valid (with 5-minute safety buffer)
+ */
+function isTokenValid(tokens: OAuthTokens): boolean {
+    const now = Date.now();
+    const expirationBuffer = 5 * 60 * 1000; // 5 minutes safety buffer
+    return tokens.expires_at > (now + expirationBuffer);
+}
+
+/**
+ * Refresh access token using refresh token (no browser needed)
+ */
+async function refreshAccessToken(refreshToken: string): Promise<OAuthTokens> {
+    const refreshParams = new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken
+    });
+
+    const response = await fetch(OAUTH_CONFIG.tokenUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Basic ${Buffer.from(`${OAUTH_CONFIG.clientId}:${OAUTH_CONFIG.clientSecret}`).toString('base64')}`
+        },
+        body: refreshParams
+    });
+
+    if (!response.ok) {
+        throw new Error(`Token refresh failed: ${response.status} ${response.statusText}`);
+    }
+
+    const tokens = await response.json() as Omit<OAuthTokens, 'expires_at'>;
+    
+    return {
+        ...tokens,
+        expires_at: Date.now() + (tokens.expires_in * 1000)
+    };
+}
+
+/**
+ * Perform complete OAuth flow (browser opens)
+ */
+async function performFullOAuthFlow(): Promise<OAuthTokens> {
     const authUrl = buildAuthorizationUrl();
     const authCode = await getAuthorizationCode(authUrl);
     const tokens = await exchangeCodeForTokens(authCode);
-    
     return tokens;
 }
 
@@ -52,7 +125,6 @@ async function getAuthorizationCode(authUrl: string): Promise<string> {
         });
         
         server.listen(OAUTH_CONFIG.callbackPort, async () => {
-            // MCP-friendly logging - avoid console.log during tool execution
             await openBrowser(authUrl);
         });
         
@@ -79,7 +151,7 @@ function handleCallback(
     const error = url.searchParams.get('error');
     
     if (error) {
-        res.writeHead(400, { 'Content-Type': 'text/html' });
+        res.writeHead(400, { 'Content-Type': 'text/html; charset=utf-8' });
         res.end('<h1>Authentication Failed</h1><p>You can close this window.</p>');
         server.close();
         reject(new Error(`OAuth error: ${error}`));
@@ -87,14 +159,18 @@ function handleCallback(
     }
     
     if (code) {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end('<h1>Authentication Successful</h1><p>You can close this window and return to your application.</p>');
+        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+        res.end(`
+            <h1>✅ Authentication Successful!</h1>
+            <p><strong>Tokens cached - no more browser pop-ups!</strong></p>
+            <p>You can close this window and return to Claude.</p>
+        `);
         server.close();
         resolve(code);
         return;
     }
     
-    res.writeHead(400, { 'Content-Type': 'text/html' });
+    res.writeHead(400, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end('<h1>Invalid Request</h1><p>No authorization code received.</p>');
 }
 
@@ -148,4 +224,11 @@ async function openBrowser(url: string): Promise<void> {
         console.error('Could not open browser:', error);
         console.log(`Please open this URL manually: ${url}`);
     }
+}
+
+/**
+ * Clear cached tokens (useful for testing)
+ */
+export function clearTokenCache(): void {
+    tokenCache = null;
 }

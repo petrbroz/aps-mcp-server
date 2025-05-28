@@ -8,9 +8,10 @@ Model Context Protocol server for comprehensive [Autodesk Construction Cloud](ht
 
 - ✅ **15 Working Tools** - All functionality operational including forms access
 - ✅ **Dual Authentication System** - Both service account and OAuth authentication working
+- ✅ **OAuth Token Persistence** - Smart token caching with automatic refresh (no repeated logins)
 - ✅ **Service Account Tools** - Projects, files, issues, diagnostics (automated access)
-- ✅ **OAuth Tools** - Forms, safety inspections, compliance (user-accountable access)
-- ✅ **Enterprise Ready** - Proper credential separation and security practices
+- ✅ **OAuth Tools** - Forms access with intelligent token management (user-accountable access)
+- ✅ **Enterprise Ready** - Production-grade credential separation and security practices
 
 > **See [TOOL_STATUS.md](TOOL_STATUS.md) for detailed testing results and technical documentation**
 
@@ -32,6 +33,7 @@ This MCP server implements a sophisticated dual authentication system designed f
 - **Purpose**: User-based access for operations requiring individual accountability
 - **Use Cases**: Forms access, safety inspections, quality control, compliance documentation
 - **Benefits**: Proper audit trails, individual accountability, regulatory compliance
+- **Token Management**: Intelligent caching with automatic refresh (authenticate once per session)
 - **Tools**: Forms, safety reports, and other sensitive construction management operations
 
 This architecture mirrors real construction site security - automated systems for general building access, individual badges for sensitive areas.
