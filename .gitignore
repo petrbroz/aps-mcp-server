@@ -1,9 +1,33 @@
+# Dependencies and build artifacts
 node_modules
 build
+dist
+
+# Environment and secrets
 .env
+
+# Private notes and documentation
+NOTES.md
+ISSUES.md
+SESSION_SUMMARY.md
+TOOL_STATUS.md
+*-notes.md
+*-private.md
+
+# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Operating System Files
+# MacOS
 .DS_Store
-Thumbs.db
+
 package.json
 SESSION_SUMMARY.md
 NOTES.md
@@ -27,10 +51,12 @@ pnpm-debug.log*
 .LSOverride
 
 # Windows
+Thumbs.db
 ehthumbs.db
 Desktop.ini
+# IDEs and Editors
+.vscode/
 
-# IDEs
 .idea/
 *.suo
 *.ntvs*
@@ -41,7 +67,7 @@ Desktop.ini
 coverage/
 .nyc_output/
 
-# Misc
+# Temporary files
 *.swp
 *.swo
 *.bak
