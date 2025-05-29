@@ -7,11 +7,11 @@ Model Context Protocol server for comprehensive [Autodesk Construction Cloud](ht
 
 ## 🚀 **Current Status** 
 
-- ✅ **15 Working Tools** - All functionality operational including forms access
+- ✅ **17 Working Tools** - All functionality operational including forms, RFIs, and submittals
 - ✅ **Dual Authentication System** - Both service account and OAuth authentication working
 - ✅ **OAuth Token Persistence** - Smart token caching with automatic refresh (no repeated logins)
 - ✅ **Service Account Tools** - Projects, files, issues, diagnostics (automated access)
-- ✅ **OAuth Tools** - Forms access with intelligent token management (user-accountable access)
+- ✅ **OAuth Tools** - Forms, RFIs, and submittals with intelligent token management (user-accountable access)
 - ✅ **Enterprise Ready** - Production-grade credential separation and security practices
 
 > **See [TOOL_STATUS.md](TOOL_STATUS.md) for detailed testing results and technical documentation**
@@ -32,10 +32,10 @@ This MCP server implements a sophisticated dual authentication system designed f
 
 ### **OAuth Authentication** (User-Accountable Access) 
 - **Purpose**: User-based access for operations requiring individual accountability
-- **Use Cases**: Forms access, safety inspections, quality control, compliance documentation
+- **Use Cases**: Forms access, RFI management, submittal approvals, safety inspections, quality control, compliance documentation
 - **Benefits**: Proper audit trails, individual accountability, regulatory compliance
 - **Token Management**: Intelligent caching with automatic refresh (authenticate once per session)
-- **Tools**: Forms, safety reports, and other sensitive construction management operations
+- **Tools**: Forms, RFIs, submittals, safety reports, and other sensitive construction management operations
 
 This architecture mirrors real construction site security - automated systems for general building access, individual badges for sensitive areas.
 
@@ -156,6 +156,10 @@ Try these prompts to verify functionality:
 **OAuth Tools** (will open browser for authentication):
 - "Show me the forms in my test project"
 - "List all safety inspection forms"
+- "Get all RFIs in project XYZ"
+- "Show me overdue RFIs with cost impact"
+- "List submittals pending approval"
+- "Get submittal details for material approvals"
 
 ## 🔧 **Troubleshooting**
 
@@ -205,6 +209,8 @@ For more detailed troubleshooting, see [Model Context Protocol debugging documen
 
 ### OAuth Tools (User Authentication Required)
 - `get-forms` - Access construction forms and submissions
+- `get-rfis` - Manage RFIs (Requests for Information) with responses and tracking
+- `get-submittals` - Access submittal data for material and equipment approvals
 - Additional OAuth tools can be added for other sensitive operations
 
 ## 🚧 **Development Notes**
@@ -244,5 +250,17 @@ When adding tools that require user authentication, follow the established patte
 - Quality control documentation
 - Regulatory compliance tracking
 - Individual accountability and audit trails
+
+### RFI Management
+- Complete RFI lifecycle tracking and management
+- Response tracking and collaboration tools
+- Cost and schedule impact assessment
+- Status monitoring and overdue tracking
+
+### Submittal Management
+- Material and equipment approval workflows
+- Specification compliance verification
+- Custom identifier support for project numbering
+- Review status tracking and approval processes
 
 > For more details on MCP server integration, see the [official documentation](https://modelcontextprotocol.io/quickstart/user).

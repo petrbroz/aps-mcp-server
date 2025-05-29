@@ -16,7 +16,22 @@ export { getProjectFilesDiagnostic } from "./get-project-files-diagnostic.js";
 export { getFolderContentsEnhanced } from "./get-folder-contents-enhanced.js";
 export { getFolderApiDiagnostic } from "./get-folder-api-diagnostic.js";
 
-// Export Forms tool - OAuth-enabled with intelligent token management
+// Export OAuth-enabled tools for user-accountable construction management workflows
 export { getForms } from "./get-forms.js";
+export { getRfis } from "./get-rfis.js";
+export { getSubmittals } from "./get-submittals.js";
 
-// Note: RFI tools still disabled due to potential authentication requirements
+/**
+ * Tool Authentication Summary:
+ * 
+ * SERVICE ACCOUNT TOOLS (Automated):
+ * - Projects, files, issues, diagnostics
+ * - Use getAccessToken() from common.js
+ * - Good for automated workflows and reporting
+ * 
+ * OAUTH TOOLS (User Accountability):
+ * - Forms, RFIs, submittals
+ * - Use authenticateWithOAuth() from oauth.js
+ * - Required for sensitive construction operations
+ * - Provides proper audit trails and user accountability
+ */
