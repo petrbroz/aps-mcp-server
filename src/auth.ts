@@ -50,6 +50,7 @@ async function getAccessToken(clientId: string, clientSecret: string, grantType:
  * @returns The signed JWT assertion.
  */
 function createAssertion(clientId: string, serviceAccountId: string, serviceAccountKeyId: string, serviceAccountPrivateKey: string, scopes: string[]) {
+    // TODO: validate inputs
     const payload = {
         iss: clientId,
         sub: serviceAccountId,
