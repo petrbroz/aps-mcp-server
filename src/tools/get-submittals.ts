@@ -85,8 +85,8 @@ export const getSubmittals: Tool<typeof schema> = {
             const oauthTokens = await authenticateWithOAuth();
             const accessToken = oauthTokens.access_token;
             
-            // Clean project ID format - remove 'b.' prefix if present
-            const cleanProjectId = projectId.replace(/^b\./, '');
+            // Keep original project ID format to match working Forms API
+            const cleanProjectId = projectId;
             
             if (submittalId) {
                 return await getSpecificSubmittal(accessToken, cleanProjectId, submittalId, includeResponses);
@@ -110,13 +110,17 @@ async function getSpecificSubmittal(
 ): Promise<any> {
     // Try multiple potential endpoint formats for submittals API
     const potentialEndpoints = [
+        `https://developer.api.autodesk.com/construction/submittals/v1/projects/${projectId}/submittals/${submittalId}`,
         `https://developer.api.autodesk.com/construction/submittals/v1/projects/${projectId}/items/${submittalId}`,
+        `https://developer.api.autodesk.com/construction/submittals/v1/containers/${projectId}/items/${submittalId}`,
         `https://developer.api.autodesk.com/bim360/submittals/v1/containers/${projectId}/items/${submittalId}`,
-        `https://developer.api.autodesk.com/construction/submittals/v1/containers/${projectId}/items/${submittalId}`
+        `https://developer.api.autodesk.com/acc/submittals/v1/projects/${projectId}/items/${submittalId}`,
+        `https://developer.api.autodesk.com/acc/submittals/v1/containers/${projectId}/items/${submittalId}`
     ];
 
     let submittalData: Submittal | null = null;
     let workingEndpoint = '';
+    let errorDetails: string[] = [];
 
     // Try each endpoint until one works
     for (const endpoint of potentialEndpoints) {
@@ -127,6 +131,9 @@ async function getSpecificSubmittal(
                     'Content-Type': 'application/json'
                 }
             });
+            
+            // Log the attempt for debugging
+            errorDetails.push(`${endpoint}: ${response.status} ${response.statusText}`);
 
             if (response.ok) {
                 submittalData = await response.json() as Submittal;
@@ -134,13 +141,15 @@ async function getSpecificSubmittal(
                 break;
             }
         } catch (error) {
+            // Log the error for debugging
+            errorDetails.push(`${endpoint}: ${error instanceof Error ? error.message : 'Unknown error'}`);
             // Continue to next endpoint
             continue;
         }
     }
 
     if (!submittalData) {
-        throw new Error('Failed to fetch submittal from any available endpoint');
+        throw new Error(`Failed to fetch submittal from any available endpoint. Attempts: ${errorDetails.join('; ')}`);
     }
     
     // Get submittal responses if requested
@@ -232,13 +241,17 @@ async function getAllSubmittals(
 ): Promise<any> {
     // Try multiple potential endpoint formats for submittals API
     const potentialEndpoints = [
+        `https://developer.api.autodesk.com/construction/submittals/v1/projects/${projectId}/submittals`,
         `https://developer.api.autodesk.com/construction/submittals/v1/projects/${projectId}/items`,
+        `https://developer.api.autodesk.com/construction/submittals/v1/containers/${projectId}/items`,
         `https://developer.api.autodesk.com/bim360/submittals/v1/containers/${projectId}/items`,
-        `https://developer.api.autodesk.com/construction/submittals/v1/containers/${projectId}/items`
+        `https://developer.api.autodesk.com/acc/submittals/v1/projects/${projectId}/items`,  
+        `https://developer.api.autodesk.com/acc/submittals/v1/containers/${projectId}/items`
     ];
 
     let submittalsData: Submittal[] = [];
     let workingEndpoint = '';
+    let errorDetails: string[] = [];
 
     // Try each endpoint until one works
     for (let endpoint of potentialEndpoints) {
@@ -254,6 +267,9 @@ async function getAllSubmittals(
                     'Content-Type': 'application/json'
                 }
             });
+            
+            // Log the attempt for debugging
+            errorDetails.push(`${endpoint}: ${response.status} ${response.statusText}`);
 
             if (response.ok) {
                 const responseData = await response.json() as APIResponse<Submittal>;
@@ -262,13 +278,15 @@ async function getAllSubmittals(
                 break;
             }
         } catch (error) {
+            // Log the error for debugging  
+            errorDetails.push(`${endpoint}: ${error instanceof Error ? error.message : 'Unknown error'}`);
             // Continue to next endpoint
             continue;
         }
     }
 
     if (!workingEndpoint) {
-        throw new Error('Failed to fetch submittals from any available endpoint');
+        throw new Error(`Failed to fetch submittals from any available endpoint. Attempts: ${errorDetails.join('; ')}`);
     }
 
     // Group submittals by status for better project overview

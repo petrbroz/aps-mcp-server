@@ -36,8 +36,8 @@ export const OAUTH_CONFIG = {
     // OAuth endpoints for Autodesk Platform Services v2
     authorizeUrl: 'https://developer.api.autodesk.com/authentication/v2/authorize',
     tokenUrl: 'https://developer.api.autodesk.com/authentication/v2/token',
-    // Scopes needed for forms access - these define what permissions we're requesting
-    scopes: ['data:read', 'data:write', 'account:read']
+    // Scopes needed for ACC API access - comprehensive permissions for construction management
+    scopes: ['data:read', 'data:write', 'data:create', 'data:search', 'account:read', 'account:write']
 };
 
 
