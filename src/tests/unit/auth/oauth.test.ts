@@ -5,7 +5,7 @@
 
 import { test, describe, before, after, mock } from 'node:test';
 import assert from 'node:assert';
-import { authenticateWithOAuth } from '../../../auth.js';
+import { authenticateWithOAuth } from '../../../utils/oauth.js';
 import { setupTestEnvironment } from '../../helpers/test-utils.js';
 
 describe('OAuth 3-Legged Authentication', () => {

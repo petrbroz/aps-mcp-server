@@ -19,7 +19,7 @@ export { getFolderApiDiagnostic } from "./get-folder-api-diagnostic.js";
 // Export OAuth-enabled tools for user-accountable construction management workflows
 export { getForms } from "./get-forms.js";
 export { getRfis } from "./get-rfis.js";
-export { getSubmittals } from "./get-submittals.js";
+// Note: Submittals API not available for ACC projects - removed get-submittals tool
 
 /**
  * Tool Authentication Summary:
@@ -30,7 +30,7 @@ export { getSubmittals } from "./get-submittals.js";
  * - Good for automated workflows and reporting
  * 
  * OAUTH TOOLS (User Accountability):
- * - Forms, RFIs, submittals
+ * - Forms, RFIs (submittals API not available)
  * - Use authenticateWithOAuth() from oauth.js
  * - Required for sensitive construction operations
  * - Provides proper audit trails and user accountability

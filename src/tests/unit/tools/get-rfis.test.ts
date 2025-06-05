@@ -5,25 +5,25 @@
 
 import { test, describe, before, after, mock } from 'node:test';
 import assert from 'node:assert';
-import { getRFIs } from '../../../tools/get-rfis.js';
+import { getRfis } from '../../../tools/get-rfis.js';
 import { createMockContext, assertLoggerCalled } from '../../helpers/mock-context.js';
 import { assertValidTool, assertValidMCPResponse, TestDataGenerators } from '../../helpers/test-utils.js';
 
 describe('Tool: get-rfis (OAuth)', () => {
     describe('Tool Structure', () => {
         test('should have valid MCP tool structure', () => {
-            assertValidTool(getRFIs);
+            assertValidTool(getRfis);
         });
 
         test('should have correct metadata', () => {
-            assert.strictEqual(getRFIs.title, 'get-rfis');
-            assert.ok(getRFIs.description.includes('RFIs'));
-            assert.ok(getRFIs.description.includes('Requests for Information'));
-            assert.ok(getRFIs.description.includes('construction project communication'));
+            assert.strictEqual(getRfis.title, 'get-rfis');
+            assert.ok(getRfis.description.includes('RFIs'));
+            assert.ok(getRfis.description.includes('Requests for Information'));
+            assert.ok(getRfis.description.includes('construction project communication'));
         });
 
         test('should define schema with optional parameters', () => {
-            const schema = getRFIs.schema;
+            const schema = getRfis.schema;
             assert.ok(schema.properties.projectId);
             assert.ok(schema.required.includes('projectId'));
             
@@ -46,7 +46,7 @@ describe('Tool: get-rfis (OAuth)', () => {
             // @ts-ignore
             global.fetch = mockFetch;
             
-            await getRFIs.callback({ projectId: 'b.test-project' }, context);
+            await getRfis.callback({ projectId: 'b.test-project' }, context);
             
             // Should call OAuth auth, not service account
             assert.strictEqual(context.auth.authenticateWithOAuth.mock.calls.length, 1);
@@ -69,7 +69,7 @@ describe('Tool: get-rfis (OAuth)', () => {
             });
             
             await assert.rejects(
-                async () => getRFIs.callback({ projectId: 'b.test-project' }, context),
+                async () => getRfis.callback({ projectId: 'b.test-project' }, context),
                 {
                     message: /User cancelled OAuth flow/
                 }
@@ -97,7 +97,7 @@ describe('Tool: get-rfis (OAuth)', () => {
             // @ts-ignore
             global.fetch = mockFetch;
             
-            await getRFIs.callback({ projectId }, context);
+            await getRfis.callback({ projectId }, context);
             
             assert.strictEqual(mockFetch.mock.calls.length, 1);
             
@@ -119,7 +119,7 @@ describe('Tool: get-rfis (OAuth)', () => {
             // @ts-ignore
             global.fetch = mockFetch;
             
-            await getRFIs.callback({ 
+            await getRfis.callback({ 
                 projectId: 'b.test-project',
                 status: 'open'
             }, context);
@@ -166,7 +166,7 @@ describe('Tool: get-rfis (OAuth)', () => {
             // @ts-ignore
             global.fetch = mockFetch;
             
-            const result = await getRFIs.callback({ 
+            const result = await getRfis.callback({ 
                 projectId: 'b.test-project' 
             }, context);
             

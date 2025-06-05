@@ -1,5 +1,7 @@
 {
   "extends": ["eslint:recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "env": {
     "node": true,
     "es2022": true
@@ -9,9 +11,10 @@
     "sourceType": "module"
   },
   "rules": {
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
     "prefer-const": "error",
     "no-var": "error"
   },
-  "ignorePatterns": ["build/", "node_modules/", "*.js"]
+  "ignorePatterns": ["build/", "node_modules/", "*.js", "src/tests/"]
 }
