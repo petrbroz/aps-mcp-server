@@ -16,12 +16,12 @@ export const getIssueTypes: Tool<typeof schema> = {
         const accessToken = await getAccessToken(["data:read"]);
         const issuesClient = new IssuesClient();
         projectId = projectId.replace("b.", ""); // the projectId should not contain the "b." prefix
-        const issues = await issuesClient.getIssues(projectId, { accessToken });
-        if (!issues.results) {
-            throw new Error("No issues found");
+        const issueTypes = await issuesClient.getIssuesTypes(projectId, { accessToken });
+        if (!issueTypes.results) {
+            throw new Error("No issue types found");
         }
         return {
-            content: issues.results.map((issue) => ({ type: "text", text: JSON.stringify(issue) }))
+            content: issueTypes.results.map((issue) => ({ type: "text", text: JSON.stringify(issue) }))
         };
     }
 };
