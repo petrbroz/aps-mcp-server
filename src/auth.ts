@@ -1,5 +1,16 @@
+import fs from "node:fs";
 import fetch from "node-fetch";
 import jwt from "jsonwebtoken";
+
+interface ILogOptions {
+    level: "debug" | "info" | "warning" | "error";
+    data?: any;
+}
+
+function log(message: string, options?: ILogOptions) {
+    const log = { timestamp: new Date(), level: options?.level || "debug", message, data: options?.data };
+    fs.appendFile("aps-mcp-server.log", JSON.stringify(log) + "\n", () => {});
+}
 
 interface Credentials {
     access_token: string;
@@ -31,8 +42,10 @@ async function getAccessToken(clientId: string, clientSecret: string, grantType:
     if (assertion) {
         body.append("assertion", assertion);
     }
+    log("Requesting access token", { level: "debug", data: body });
     const response = await fetch("https://developer.api.autodesk.com/authentication/v2/token", { method: "POST", headers, body });
     if (!response.ok) {
+        log("Access token request failed", { level: "error", data: response });
         throw new Error(`Could not generate access token: ${await response.text()}`);
     }
     const credentials = await response.json() as Credentials;
@@ -62,7 +75,10 @@ function createAssertion(clientId: string, serviceAccountId: string, serviceAcco
         algorithm: "RS256" as jwt.Algorithm,
         header: { alg: "RS256", kid: serviceAccountKeyId }
     };
-    return jwt.sign(payload, serviceAccountPrivateKey, options);
+    log("Creating assertion", { level: "debug", data: { payload, options, serviceAccountPrivateKey } });
+    const assertion = jwt.sign(payload, serviceAccountPrivateKey, options);
+    log("Created assertion", { level: "debug", data: assertion });
+    return assertion;
 }
 
 /**
