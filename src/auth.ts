@@ -42,11 +42,17 @@ async function getAccessToken(clientId: string, clientSecret: string, grantType:
     if (assertion) {
         body.append("assertion", assertion);
     }
-    log("Requesting access token", { level: "debug", data: body });
+    log("Requesting access token", { level: "debug", data: Object.fromEntries(body.entries()) });
     const response = await fetch("https://developer.api.autodesk.com/authentication/v2/token", { method: "POST", headers, body });
     if (!response.ok) {
-        log("Access token request failed", { level: "error", data: response });
-        throw new Error(`Could not generate access token: ${await response.text()}`);
+        const responseText = await response.text();
+        log("Access token request failed", { level: "error", data: { 
+            status: response.status, 
+            statusText: response.statusText, 
+            headers: Object.fromEntries(response.headers.entries()), 
+            body: responseText 
+        }});
+        throw new Error(`Could not generate access token: ${responseText}`);
     }
     const credentials = await response.json() as Credentials;
     return credentials;
@@ -91,6 +97,7 @@ function createAssertion(clientId: string, serviceAccountId: string, serviceAcco
  * @throws If the request for the access token fails.
  */
 export async function getClientCredentialsAccessToken(clientId: string, clientSecret: string, scopes: string[]) {
+    log("Getting client credentials access token", { level: "info", data: { clientId, scopes } });
     return getAccessToken(clientId, clientSecret, "client_credentials", scopes);
 }
 
@@ -108,6 +115,7 @@ export async function getClientCredentialsAccessToken(clientId: string, clientSe
  */
 export async function getServiceAccountAccessToken(clientId: string, clientSecret: string, serviceAccountId: string, serviceAccountKeyId: string, serviceAccountPrivateKey: string, scopes: string[]) {
     const assertion = createAssertion(clientId, serviceAccountId, serviceAccountKeyId, serviceAccountPrivateKey, scopes);
+    log("Getting service account access token", { level: "info", data: { clientId, serviceAccountId, serviceAccountKeyId, scopes } });
     return getAccessToken(clientId, clientSecret, "urn:ietf:params:oauth:grant-type:jwt-bearer", scopes, assertion);
 }
 
