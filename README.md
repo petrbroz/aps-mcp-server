@@ -1,3 +1,16 @@
+> IMPORTANT: This project has been moved to https://github.com/autodesk-platform-services/aps-mcp-server-nodejs.
+
+---
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
 # aps-mcp-server
 
 Experimental [Model Context Protocol](https://modelcontextprotocol.io) server build with Node.js, providing access to [Autodesk Platform Services](https://aps.autodesk.com) API, with fine-grained access control using the new _Secure Service Accounts_ feature.
